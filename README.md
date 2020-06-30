@@ -21,7 +21,7 @@ more info, visit https://bugly.qq.com/docs/
 ## install
 
 ```shell
-cordova plugin add cordova-plugin-bugly-sdk  --variable ANDROID_APPID=your value --variable IOS_APPID=your value
+cordova plugin add https://github.com/initMrD/cordova-plugin-bugly-sdk.git --variable ANDROID_APPID=your value --variable IOS_APPID=your value
 ```
 
 
@@ -101,17 +101,6 @@ Bugly.initSDK(function(success){
 
 
 There also have some methods to test app crash, you can see them in demo project code.
-
-
-
-
-# Donate
-
-If this project help you reduce time to develop, you can give me a cup of coffee :)
-
-
-
-[![paypal](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/jasonz1987/6.66)
 
 
 

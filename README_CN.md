@@ -17,7 +17,7 @@
 
 
 ```shell
-cordova plugin add cordova-plugin-bugly-sdk  --variable ANDROID_APPID=your value --variable IOS_APPID=your value
+cordova plugin add https://github.com/initMrD/cordova-plugin-bugly-sdk.git  --variable ANDROID_APPID=your value --variable IOS_APPID=your value
 ```
 
 
@@ -114,17 +114,3 @@ Bugly.initSDK(function(success){
 
 
 还有一些测试闪退的方法，具体参考demo里的代码。
-
-
-
-
-# 赞赏
-
-如果我的项目对你有帮助，欢迎赞赏。
-
-![donate.png](donate.png)
-
-
-
-
-

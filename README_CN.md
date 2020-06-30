@@ -68,6 +68,19 @@ Bugly.initSDK(function(success){
   Bugly.enableJSMonitor();
 
 ```
+**上报js报错**
+
+```
+
+window.console.error = (error, message) => {
+    console.log('js 上报错误' + message);
+    if (typeof message === 'string') {
+        Bugly.reportException(message + '');
+    } else {
+        Bugly.reportException(JSON.stringify(message) + '');
+    }
+};
+```
 
 
 

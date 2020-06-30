@@ -9,6 +9,7 @@ import org.apache.cordova.CordovaWebView;
 
 import android.util.Log;
 import android.webkit.WebView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,28 +28,30 @@ public class CDVBugly extends CordovaPlugin {
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
-        APP_ID = webView.getPreferences().getString(BUGLY_APP_ID,"");
+        APP_ID = webView.getPreferences().getString(BUGLY_APP_ID, "");
     }
 
     @Override
     public boolean execute(String action, CordovaArgs args, CallbackContext callbackContext) throws JSONException {
 
-        if(action.equals("initSDK")) {
+        if (action.equals("initSDK")) {
             return this.initSDK(args, callbackContext);
-        } else if (action.equals("enableJSMonitor")){
+        } else if (action.equals("enableJSMonitor")) {
             return this.enableJSMonitor(args, callbackContext);
-        } else if (action.equals("setTagID")){
+        } else if (action.equals("setTagID")) {
             return this.setTagID(args, callbackContext);
-        } else if (action.equals("setUserID")){
+        } else if (action.equals("setUserID")) {
             return this.setUserID(args, callbackContext);
-        } else if (action.equals("putUserData")){
+        } else if (action.equals("putUserData")) {
             return this.putUserData(args, callbackContext);
-        } else if (action.equals("testJavaCrash")){
+        } else if (action.equals("testJavaCrash")) {
             return this.testJavaCrash(args, callbackContext);
-        } else if (action.equals("testNativeCrash")){
+        } else if (action.equals("testNativeCrash")) {
             return this.testNativeCrash(args, callbackContext);
-        } else if (action.equals("testANRCrash")){
+        } else if (action.equals("testANRCrash")) {
             return this.testANRCrash(args, callbackContext);
+        } else if (action.equals("reportException")) {
+            return this.reportException(args, callbackContext);
         }
 
         return false;
@@ -62,33 +65,33 @@ public class CDVBugly extends CordovaPlugin {
             //TODO check param format
             UserStrategy strategy = new UserStrategy(this.cordova.getActivity().getApplicationContext());
 
-            if(params.has("channel")) {
+            if (params.has("channel")) {
                 strategy.setAppChannel(params.getString("channel"));
             }
-            if(params.has("version")) {
+            if (params.has("version")) {
                 strategy.setAppVersion(params.getString("version"));
             }
-            if(params.has("package")) {
+            if (params.has("package")) {
                 strategy.setAppPackageName(params.getString("package"));
             }
-            if(params.has("delay")) {
+            if (params.has("delay")) {
                 strategy.setAppReportDelay(params.getInt("delay"));
             }
-            if(params.has("develop")) {
-                CrashReport.setIsDevelopmentDevice(this.cordova.getActivity().getApplicationContext(),params.getBoolean("develop"));
+            if (params.has("develop")) {
+                CrashReport.setIsDevelopmentDevice(this.cordova.getActivity().getApplicationContext(), params.getBoolean("develop"));
             } else {
                 CrashReport.setIsDevelopmentDevice(this.cordova.getActivity().getApplicationContext(), BuildConfig.DEBUG);
             }
 
             boolean debugModel;
 
-            if(params.has("debug")) {
+            if (params.has("debug")) {
                 debugModel = params.getBoolean("debug");
             } else {
                 debugModel = BuildConfig.DEBUG;
             }
 
-            CrashReport.initCrashReport(this.cordova.getActivity().getApplicationContext(),APP_ID,debugModel,strategy);
+            CrashReport.initCrashReport(this.cordova.getActivity().getApplicationContext(), APP_ID, debugModel, strategy);
         } catch (JSONException e) {
             callbackContext.error(ERROR_INVALID_PARAMETERS);
             return true;
@@ -99,11 +102,12 @@ public class CDVBugly extends CordovaPlugin {
         return true;
     }
 
+
     private boolean enableJSMonitor(CordovaArgs args, CallbackContext callbackContext) {
         this.cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                CrashReport.setJavascriptMonitor((WebView)webView.getView(), true);
+                CrashReport.setJavascriptMonitor((WebView) webView.getView(), true);
             }
         });
         callbackContext.success();
@@ -122,10 +126,10 @@ public class CDVBugly extends CordovaPlugin {
         return true;
     }
 
-     private boolean setUserID(CordovaArgs args, CallbackContext callbackContext) {
+    private boolean setUserID(CordovaArgs args, CallbackContext callbackContext) {
         try {
             int id = args.getInt(0);
-            CrashReport.setUserID(this.cordova.getActivity().getApplicationContext(), id);
+            CrashReport.setUserId(this.cordova.getActivity().getApplicationContext(), id + "");
         } catch (JSONException e) {
             callbackContext.error(ERROR_INVALID_PARAMETERS);
             return true;
@@ -177,6 +181,20 @@ public class CDVBugly extends CordovaPlugin {
                 CrashReport.testANRCrash();
             }
         });
+        callbackContext.success();
+        return true;
+    }
+
+    private boolean reportException(CordovaArgs args, CallbackContext callbackContext) {
+        Exception e = null;
+        try {
+            e = new Exception(args.getString(0));
+            CrashReport.postCatchedException(e);
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+            CrashReport.postCatchedException(ex);
+        }
+
         callbackContext.success();
         return true;
     }

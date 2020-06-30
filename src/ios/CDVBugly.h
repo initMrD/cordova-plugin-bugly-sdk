@@ -8,5 +8,5 @@
 - (void)setUserID:(CDVInvokedUrlCommand*)command;
 - (void)putUserData:(CDVInvokedUrlCommand*)command;
 - (void)testOCCrash:(CDVInvokedUrlCommand*)command;
-
+- (void)reportException:(CDVInvokedUrlCommand*)command;
 @end

@@ -1,38 +1,42 @@
 var exec = require('cordova/exec');
 
-exports.initSDK = function(success, error, arg0) {
+exports.initSDK = function (success, error, arg0) {
     exec(success, error, "Bugly", "initSDK", [arg0]);
 };
 
-exports.enableJSMonitor = function() {
+exports.enableJSMonitor = function () {
     exec(null, null, "Bugly", "enableJSMonitor", []);
 };
 
-exports.setTagID = function(arg0) {
+exports.setTagID = function (arg0) {
     exec(null, null, "Bugly", "setTagID", [arg0]);
 };
 
-exports.setUserID = function(arg0) {
+exports.setUserID = function (arg0) {
     exec(null, null, "Bugly", "setUserID", [arg0]);
 };
 
-exports.putUserData = function(arg0) {
+exports.putUserData = function (arg0) {
     exec(null, null, "Bugly", "putUserData", [arg0]);
 };
 
-exports.testJavaCrash = function() {
+exports.testJavaCrash = function () {
     exec(null, null, "Bugly", "testJavaCrash", []);
 };
 
-exports.testNativeCrash = function() {
+exports.testNativeCrash = function () {
     exec(null, null, "Bugly", "testNativeCrash", []);
 };
 
-exports.testANRCrash = function() {
+exports.testANRCrash = function () {
     exec(null, null, "Bugly", "testANRCrash", []);
 };
 
-exports.testOCCrash = function() {
+exports.testOCCrash = function () {
     exec(null, null, "Bugly", "testOCCrash", []);
 };
+
+exports.reportException = function (reason) {
+    exec(null, null, "Bugly", "reportException", [reason]);
+}
 
